@@ -5,6 +5,15 @@ const DEFAULT_STATS = {
   colors: 76
 };
 
+function escapeHtml(value) {
+  return String(value || '')
+    .replace(/&/g, '&amp;')
+    .replace(/</g, '&lt;')
+    .replace(/>/g, '&gt;')
+    .replace(/"/g, '&quot;')
+    .replace(/'/g, '&#39;');
+}
+
 function animateNumber(element, value) {
   const target = Number(value || 0);
   const duration = 900;
@@ -39,15 +48,15 @@ async function loadNotices() {
     if (!response.ok) return;
     const notices = await response.json();
     if (!Array.isArray(notices) || !notices.length) return;
-    list.innerHTML = notices.slice(0, 4).map((notice) => `
+    list.innerHTML = notices.slice(0, 3).map((notice) => `
       <article>
-        <time datetime="${String(notice.date || '')}">${String(notice.dateLabel || notice.date || '')}</time>
-        <strong>${String(notice.title || '')}</strong>
-        <p>${String(notice.body || '')}</p>
+        <time datetime="${escapeHtml(notice.date || '')}">${escapeHtml(notice.dateLabel || notice.date || '')}</time>
+        <strong>${escapeHtml(notice.title || '')}</strong>
+        <p>${escapeHtml(notice.body || '')}</p>
       </article>
     `).join('');
   } catch (_) {
-    // Keep the static fallback notice.
+    // Keep the static fallback notice visible.
   }
 }
 
@@ -74,6 +83,46 @@ function initReveal() {
   elements.forEach((element) => observer.observe(element));
 }
 
+function initMenu() {
+  const button = document.querySelector('.menu-toggle');
+  const nav = document.getElementById('siteNav');
+  if (!button || !nav) return;
+
+  function setOpen(open) {
+    nav.classList.toggle('is-open', open);
+    document.body.classList.toggle('is-menu-open', open);
+    button.setAttribute('aria-expanded', String(open));
+    button.textContent = open ? 'Close' : 'Menu';
+  }
+
+  button.addEventListener('click', () => {
+    setOpen(!nav.classList.contains('is-open'));
+  });
+
+  nav.querySelectorAll('a').forEach((link) => {
+    link.addEventListener('click', () => setOpen(false));
+  });
+
+  document.addEventListener('keydown', (event) => {
+    if (event.key === 'Escape') setOpen(false);
+  });
+}
+
+function initFaqMore() {
+  const list = document.getElementById('faqList');
+  const button = document.getElementById('faqMoreButton');
+  if (!list || !button) return;
+
+  button.addEventListener('click', () => {
+    const isCollapsed = list.dataset.collapsed !== 'false';
+    list.dataset.collapsed = isCollapsed ? 'false' : 'true';
+    button.setAttribute('aria-expanded', String(isCollapsed));
+    button.textContent = isCollapsed ? '閉じる' : 'もっと見る';
+  });
+}
+
 loadStats();
 loadNotices();
 initReveal();
+initMenu();
+initFaqMore();
