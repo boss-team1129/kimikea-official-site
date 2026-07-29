@@ -1,0 +1,4 @@
+User-agent: *
+Allow: /
+
+Sitemap: https://team-s-corporation.github.io/team-s-corporation/sitemap.xml

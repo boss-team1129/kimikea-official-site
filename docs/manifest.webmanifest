@@ -1,0 +1,16 @@
+{
+  "id": "./",
+  "name": "NPO法人シールエクステ協会きみけあ",
+  "short_name": "きみけあ",
+  "description": "シールエクステ講習・資格・加盟店支援の公式サイト",
+  "lang": "ja",
+  "start_url": "./",
+  "scope": "./",
+  "display": "standalone",
+  "background_color": "#f7f2ea",
+  "theme_color": "#f6f1e8",
+  "icons": [
+    { "src": "./icon-192.png", "sizes": "192x192", "type": "image/png", "purpose": "any" },
+    { "src": "./icon-512.png", "sizes": "512x512", "type": "image/png", "purpose": "any maskable" }
+  ]
+}
