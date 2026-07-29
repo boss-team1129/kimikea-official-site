@@ -82,17 +82,47 @@ function getShopInstagram(shop) {
   return shop.instagramUrl || shop.instagramURL || shop.instagram || '';
 }
 
-function getShopImageUrl(shop) {
+function getShopImageCandidates(shop) {
+  if (shop.hasImage === false || String(shop.imageStatus || '').trim() === 'missing') return [];
+  const explicitImage = String(shop.image || shop.imageUrl || shop.photoUrl || '').trim();
   const shopId = String(shop.shopId || '').trim();
-  if (shopId) return `./assets/shops/${encodeURIComponent(shopId)}.jpg`;
-  return shop.imageUrl || './assets/shops/placeholder.jpg';
+  const candidates = [];
+  if (explicitImage) candidates.push(explicitImage);
+  if (shopId) {
+    const safeShopId = shopId.replace(/[^a-zA-Z0-9_-]/g, '');
+    ['jpg', 'jpeg', 'png', 'webp'].forEach((extension) => {
+      candidates.push(`./assets/shops/${encodeURIComponent(safeShopId)}.${extension}`);
+    });
+  }
+  return [...new Set(candidates)];
+}
+
+window.handleShopImageError = function handleShopImageError(image) {
+  const figure = image.closest('.shop-photo');
+  let candidates = [];
+  try {
+    candidates = JSON.parse(image.dataset.candidates || '[]');
+  } catch (_) {
+    candidates = [];
+  }
+  const nextIndex = Number(image.dataset.index || 0) + 1;
+  if (candidates[nextIndex]) {
+    image.dataset.index = String(nextIndex);
+    image.src = candidates[nextIndex];
+    return;
+  }
+  if (figure) {
+    figure.classList.add('is-missing');
+    figure.innerHTML = '<div class="shop-photo-missing">店舗写真準備中</div>';
+  }
 }
 
 function renderShopCard(shop, variant = 'carousel') {
   const phoneNumber = normalizePhone(shop.phone || shop.tel || shop.phoneNumber);
   const name = getShopName(shop);
   const location = [shop.prefecture, shop.city].filter(Boolean).join(' ');
-  const imageUrl = getShopImageUrl(shop);
+  const imageCandidates = getShopImageCandidates(shop);
+  const imageUrl = imageCandidates[0] || '';
   const actions = [
     buildShopLink(shop.detailUrl || shop.connectUrl, '店舗詳細'),
     buildShopLink(shop.mapUrl || shop.googleMapUrl || shop.googleMapURL, 'Googleマップ'),
@@ -104,7 +134,9 @@ function renderShopCard(shop, variant = 'carousel') {
   return `
     <article class="shop-card ${variant === 'list' ? 'shop-card-list' : ''}">
       <figure class="shop-photo">
-        <img src="${escapeHtml(imageUrl)}" alt="${escapeHtml(name || '加盟店')}の店舗写真" width="900" height="600" loading="lazy" onerror="this.onerror=null;this.src='./assets/shops/placeholder.jpg';">
+        ${imageUrl
+          ? `<img src="${escapeHtml(imageUrl)}" alt="${escapeHtml(name || '加盟店')}の店舗写真" width="900" height="600" loading="lazy" data-candidates="${escapeHtml(JSON.stringify(imageCandidates))}" data-index="0" onerror="handleShopImageError(this);">`
+          : '<div class="shop-photo-missing">店舗写真準備中</div>'}
       </figure>
       <div class="shop-card-body">
         <span>${escapeHtml(shop.type || '加盟店')}</span>
