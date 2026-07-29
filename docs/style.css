@@ -635,13 +635,15 @@ p {
 }
 
 .shop-card {
-  flex: 0 0 78vw;
-  max-width: 430px;
+  flex: 0 0 80vw;
+  max-width: 460px;
   overflow: hidden;
   border: 1px solid rgba(185,154,82,.22);
-  border-radius: 12px;
-  background: rgba(255,253,248,.86);
-  box-shadow: 0 18px 48px rgba(50,36,21,.12);
+  border-radius: 14px;
+  background:
+    linear-gradient(180deg, rgba(255,255,255,.72), rgba(255,250,240,.9)),
+    rgba(255,253,248,.9);
+  box-shadow: 0 22px 58px rgba(50,36,21,.14);
   scroll-snap-align: center;
   transition: transform .32s ease, box-shadow .32s ease;
 }
@@ -651,17 +653,31 @@ p {
   box-shadow: var(--shadow);
 }
 
-.shop-card img {
+.shop-photo {
+  margin: 0;
+  overflow: hidden;
+  background:
+    linear-gradient(135deg, rgba(255,255,255,.88), rgba(224,202,150,.24)),
+    #e9ddca;
+}
+
+.shop-photo img {
   width: 100%;
-  aspect-ratio: 16 / 10;
+  height: clamp(230px, 54vw, 320px);
   object-fit: cover;
   object-position: center;
+  transition: transform 1.05s ease, filter .35s ease;
+}
+
+.shop-card:hover .shop-photo img {
+  transform: scale(1.035);
+  filter: saturate(1.04) contrast(1.02);
 }
 
 .shop-card-body {
   display: grid;
-  gap: 12px;
-  padding: 20px;
+  gap: 11px;
+  padding: 19px 20px 21px;
 }
 
 .shop-card-body span,
@@ -700,10 +716,17 @@ p {
   padding: 0 13px;
   border: 1px solid rgba(185,154,82,.28);
   border-radius: 999px;
-  background: rgba(255,255,255,.56);
+  background: rgba(255,255,255,.66);
   color: var(--ink);
   font-size: 12px;
   font-weight: 900;
+  transition: transform .25s ease, background .25s ease, border-color .25s ease;
+}
+
+.shop-actions a:hover {
+  transform: translateY(-2px);
+  border-color: rgba(185,154,82,.55);
+  background: rgba(255,255,255,.92);
 }
 
 .shop-card-fallback {
@@ -1366,6 +1389,10 @@ details p {
     max-width: none;
   }
 
+  .shop-photo img {
+    height: 260px;
+  }
+
   .choice-grid {
     grid-template-columns: repeat(2, minmax(0, 1fr));
   }
@@ -1416,6 +1443,10 @@ details p {
 
   .brand-declaration h2 {
     font-size: 84px;
+  }
+
+  .shop-card {
+    flex-basis: calc((100% - 48px) / 4);
   }
 }
 

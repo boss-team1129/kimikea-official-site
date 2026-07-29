@@ -82,13 +82,20 @@ function getShopInstagram(shop) {
   return shop.instagramUrl || shop.instagramURL || shop.instagram || '';
 }
 
+function getShopImageUrl(shop) {
+  const shopId = String(shop.shopId || '').trim();
+  if (shopId) return `./assets/shops/${encodeURIComponent(shopId)}.jpg`;
+  return shop.imageUrl || './assets/shops/placeholder.jpg';
+}
+
 function renderShopCard(shop, variant = 'carousel') {
   const phoneNumber = normalizePhone(shop.phone || shop.tel || shop.phoneNumber);
   const name = getShopName(shop);
   const location = [shop.prefecture, shop.city].filter(Boolean).join(' ');
+  const imageUrl = getShopImageUrl(shop);
   const actions = [
-    buildShopLink(shop.detailUrl || shop.connectUrl, '詳しく見る'),
-    buildShopLink(shop.mapUrl || shop.googleMapUrl || shop.googleMapURL, '地図を見る'),
+    buildShopLink(shop.detailUrl || shop.connectUrl, '店舗詳細'),
+    buildShopLink(shop.mapUrl || shop.googleMapUrl || shop.googleMapURL, 'Googleマップ'),
     buildShopLink(getShopInstagram(shop), 'Instagram'),
     buildShopLink(getShopHomepage(shop), 'ホームページ'),
     phoneNumber ? buildShopLink(`tel:${phoneNumber}`, '電話する') : ''
@@ -96,7 +103,9 @@ function renderShopCard(shop, variant = 'carousel') {
 
   return `
     <article class="shop-card ${variant === 'list' ? 'shop-card-list' : ''}">
-      <img src="${escapeHtml(shop.imageUrl || './assets/shop-team-hair.jpg')}" alt="${escapeHtml(name || '加盟店')}の店舗イメージ" width="900" height="563" loading="lazy">
+      <figure class="shop-photo">
+        <img src="${escapeHtml(imageUrl)}" alt="${escapeHtml(name || '加盟店')}の店舗写真" width="900" height="600" loading="lazy" onerror="this.onerror=null;this.src='./assets/shops/placeholder.jpg';">
+      </figure>
       <div class="shop-card-body">
         <span>${escapeHtml(shop.type || '加盟店')}</span>
         <h3>${escapeHtml(name)}</h3>
