@@ -1,7 +1,7 @@
 const DEFAULT_STATS = {
-  shops: 5,
-  trainings: 0,
-  events: 0,
+  shops: 7,
+  trainings: 11,
+  events: 2,
   colors: 76
 };
 
