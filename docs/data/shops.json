@@ -78,7 +78,7 @@
     "type": "加盟店",
     "status": "公開",
     "description": "富士市でシールエクステを相談できる、落ち着いた雰囲気のサロン。",
-    "hasImage": false,
+    "image": "assets/shops/shop-k-12.jpg",
     "detailUrl": "https://boss-team1129.github.io/Kimikea-Connect/index.html?view=map",
     "mapUrl": "https://maps.app.goo.gl/Z73tEiJB7kJmRKXm8?g_st=ic",
     "instagramUrl": "",
