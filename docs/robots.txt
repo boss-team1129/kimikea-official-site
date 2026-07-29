@@ -1,4 +1,4 @@
 User-agent: *
 Allow: /
 
-Sitemap: https://team-s-corporation.github.io/team-s-corporation/sitemap.xml
+Sitemap: https://boss-team1129.github.io/kimikea-official-site/sitemap.xml
