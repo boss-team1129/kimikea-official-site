@@ -339,7 +339,7 @@ p {
   padding: 118px 18px;
   background:
     linear-gradient(180deg, rgba(17,16,15,.86), rgba(33,23,17,.98)),
-    url("./assets/style-extension.jpg") 62% center / cover;
+    url("./assets/style-gradation.jpg") 62% center / cover;
   color: #fff;
 }
 
@@ -414,7 +414,7 @@ p {
 .style-image {
   background-image:
     linear-gradient(180deg, rgba(0,0,0,.05), rgba(0,0,0,.34)),
-    url("./assets/style-extension.jpg");
+    url("./assets/style-earring-color.jpg");
   background-position: 62% center;
 }
 
@@ -499,6 +499,66 @@ p {
   color: #fff;
 }
 
+.style-variation-section {
+  overflow: hidden;
+  background: linear-gradient(180deg, #fffaf1, #f4eee4);
+}
+
+.style-strip {
+  display: flex;
+  gap: 14px;
+  width: calc(100% + 36px);
+  max-width: none;
+  margin-left: -18px;
+  margin-right: -18px;
+  overflow-x: auto;
+  padding: 2px 18px 18px;
+  scroll-snap-type: x mandatory;
+  -webkit-overflow-scrolling: touch;
+  scrollbar-width: none;
+}
+
+.style-strip::-webkit-scrollbar {
+  display: none;
+}
+
+.style-strip article {
+  position: relative;
+  flex: 0 0 74vw;
+  max-width: 410px;
+  overflow: hidden;
+  border-radius: 12px;
+  background: var(--black);
+  box-shadow: 0 18px 48px rgba(45,31,18,.14);
+  scroll-snap-align: center;
+}
+
+.style-strip img {
+  width: 100%;
+  aspect-ratio: 4 / 5;
+  object-fit: cover;
+  transition: transform 1.1s ease;
+}
+
+.style-strip article:hover img {
+  transform: scale(1.035);
+}
+
+.style-strip span {
+  position: absolute;
+  left: 16px;
+  bottom: 16px;
+  padding: 9px 13px;
+  border: 1px solid rgba(255,255,255,.24);
+  border-radius: 999px;
+  background: rgba(17,16,15,.38);
+  color: #fff;
+  font-size: 13px;
+  font-weight: 900;
+  backdrop-filter: blur(14px);
+  -webkit-backdrop-filter: blur(14px);
+}
+
 .charm-section {
   background: #fffaf1;
 }
@@ -519,7 +579,7 @@ p {
   width: 100%;
   aspect-ratio: 4 / 5;
   object-fit: cover;
-  object-position: 58% center;
+  object-position: 42% center;
 }
 
 .charm-list {
@@ -652,18 +712,86 @@ p {
   align-content: center;
 }
 
+.sub-hero {
+  min-height: 58svh;
+  display: grid;
+  align-items: end;
+  padding: 130px 18px 58px;
+  background:
+    linear-gradient(180deg, rgba(17,16,15,.12), rgba(17,16,15,.7)),
+    url("./assets/shop-ocean.jpg") center / cover;
+  color: #fff;
+}
+
+.sub-hero-inner {
+  width: min(100%, 980px);
+  margin: 0 auto;
+}
+
+.sub-hero h1 {
+  margin: 0 0 12px;
+  font-family: var(--font-serif);
+  font-size: 56px;
+  font-weight: 400;
+  line-height: 1.08;
+}
+
+.sub-hero p:not(.section-kicker) {
+  max-width: 540px;
+  color: rgba(255,255,255,.78);
+}
+
+.shop-list {
+  display: grid;
+  gap: 18px;
+}
+
+.shop-list .shop-card {
+  max-width: none;
+}
+
 .activity-row {
   display: grid;
   gap: 12px;
 }
 
 .activity-row article {
+  overflow: hidden;
   min-height: 210px;
-  padding: 24px;
+  padding: 0 24px 24px;
   border: 1px solid var(--line);
   border-radius: var(--radius);
   background: rgba(255,253,248,.72);
   box-shadow: 0 12px 34px rgba(42,31,18,.07);
+}
+
+.activity-row article::before {
+  content: "";
+  display: block;
+  height: 150px;
+  margin: 0 -24px 22px;
+  background: center / cover;
+}
+
+.activity-row article:nth-child(1)::before {
+  background-image:
+    linear-gradient(180deg, rgba(255,255,255,.02), rgba(33,23,17,.26)),
+    url("./assets/stylist-community.jpg");
+  background-position: 50% center;
+}
+
+.activity-row article:nth-child(2)::before {
+  background-image:
+    linear-gradient(180deg, rgba(255,255,255,.02), rgba(33,23,17,.26)),
+    url("./assets/shop-team-hair.jpg");
+  background-position: center;
+}
+
+.activity-row article:nth-child(3)::before {
+  background-image:
+    linear-gradient(180deg, rgba(255,255,255,.02), rgba(33,23,17,.3)),
+    url("./assets/community-event.jpg");
+  background-position: 45% center;
 }
 
 .connect-section {
@@ -1195,6 +1323,19 @@ details p {
     min-height: 360px;
   }
 
+  .style-strip {
+    width: min(100%, 1120px);
+    max-width: 1120px;
+    margin-left: auto;
+    margin-right: auto;
+    padding-left: 0;
+    padding-right: 0;
+  }
+
+  .style-strip article {
+    flex-basis: calc((100% - 42px) / 4);
+  }
+
   .charm-layout {
     grid-template-columns: minmax(0, 1.05fr) minmax(0, .95fr);
     align-items: center;
@@ -1257,6 +1398,10 @@ details p {
   .notice-list {
     grid-template-columns: repeat(3, minmax(0, 1fr));
     gap: 24px;
+  }
+
+  .shop-list {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
   }
 
   .notice-list article {

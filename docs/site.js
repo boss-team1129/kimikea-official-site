@@ -70,43 +70,63 @@ function normalizePhone(value) {
   return String(value || '').replace(/[^\d+]/g, '');
 }
 
+function getShopName(shop) {
+  return shop.name || shop.salonName || shop.shopName || shop.storeName || '';
+}
+
+function getShopHomepage(shop) {
+  return shop.homepageUrl || shop.websiteUrl || shop.websiteURL || shop.homepage || '';
+}
+
+function getShopInstagram(shop) {
+  return shop.instagramUrl || shop.instagramURL || shop.instagram || '';
+}
+
+function renderShopCard(shop, variant = 'carousel') {
+  const phoneNumber = normalizePhone(shop.phone || shop.tel || shop.phoneNumber);
+  const name = getShopName(shop);
+  const location = [shop.prefecture, shop.city].filter(Boolean).join(' ');
+  const actions = [
+    buildShopLink(shop.detailUrl || shop.connectUrl, '詳しく見る'),
+    buildShopLink(shop.mapUrl || shop.googleMapUrl || shop.googleMapURL, '地図を見る'),
+    buildShopLink(getShopInstagram(shop), 'Instagram'),
+    buildShopLink(getShopHomepage(shop), 'ホームページ'),
+    phoneNumber ? buildShopLink(`tel:${phoneNumber}`, '電話する') : ''
+  ].filter(Boolean).join('');
+
+  return `
+    <article class="shop-card ${variant === 'list' ? 'shop-card-list' : ''}">
+      <img src="${escapeHtml(shop.imageUrl || './assets/shop-team-hair.jpg')}" alt="${escapeHtml(name || '加盟店')}の店舗イメージ" width="900" height="563" loading="lazy">
+      <div class="shop-card-body">
+        <span>${escapeHtml(shop.type || '加盟店')}</span>
+        <h3>${escapeHtml(name)}</h3>
+        <p class="shop-meta">${escapeHtml(location)}</p>
+        <p>${escapeHtml(shop.description || shop.introduction || '')}</p>
+        ${actions ? `<div class="shop-actions">${actions}</div>` : ''}
+      </div>
+    </article>
+  `;
+}
+
+async function fetchShops() {
+  const response = await fetch('./data/shops.json', { cache: 'no-store' });
+  if (!response.ok) throw new Error('shops.json not found');
+  const shops = await response.json();
+  if (!Array.isArray(shops) || !shops.length) throw new Error('empty shops');
+  return shops.filter((shop) => String(shop.status || '公開').trim() !== '非公開');
+}
+
 async function loadShops() {
   const carousel = document.getElementById('shopCarousel');
-  if (!carousel) return;
+  const list = document.getElementById('shopList');
+  if (!carousel && !list) return;
 
   try {
-    const response = await fetch('./data/shops.json', { cache: 'no-store' });
-    if (!response.ok) throw new Error('shops.json not found');
-    const shops = await response.json();
-    if (!Array.isArray(shops) || !shops.length) throw new Error('empty shops');
-
-    carousel.innerHTML = shops.map((shop) => {
-      const phoneNumber = normalizePhone(shop.phone);
-      const location = [shop.prefecture, shop.city].filter(Boolean).join(' ');
-      const actions = [
-        buildShopLink(shop.detailUrl || shop.connectUrl, '詳しく見る'),
-        buildShopLink(shop.mapUrl, '地図を見る'),
-        buildShopLink(shop.instagramUrl, 'Instagram'),
-        buildShopLink(shop.homepageUrl || shop.websiteUrl, 'ホームページ'),
-        buildShopLink(shop.hotPepperUrl, 'Hot Pepper'),
-        phoneNumber ? buildShopLink(`tel:${phoneNumber}`, '電話する') : ''
-      ].filter(Boolean).join('');
-
-      return `
-        <article class="shop-card">
-          <img src="${escapeHtml(shop.imageUrl || './assets/shop-team-hair.jpg')}" alt="${escapeHtml(shop.name || '加盟店')}の店舗イメージ" width="900" height="563" loading="lazy">
-          <div class="shop-card-body">
-            <span>${escapeHtml(shop.type || '加盟店')}</span>
-            <h3>${escapeHtml(shop.name || '')}</h3>
-            <p class="shop-meta">${escapeHtml(location)}</p>
-            <p>${escapeHtml(shop.description || '')}</p>
-            ${actions ? `<div class="shop-actions">${actions}</div>` : ''}
-          </div>
-        </article>
-      `;
-    }).join('');
+    const shops = await fetchShops();
+    if (carousel) carousel.innerHTML = shops.map((shop) => renderShopCard(shop)).join('');
+    if (list) list.innerHTML = shops.map((shop) => renderShopCard(shop, 'list')).join('');
   } catch (_) {
-    carousel.innerHTML = `
+    const fallback = `
       <article class="shop-card shop-card-fallback">
         <div class="shop-card-body">
           <span>Partner Salons</span>
@@ -115,6 +135,8 @@ async function loadShops() {
         </div>
       </article>
     `;
+    if (carousel) carousel.innerHTML = fallback;
+    if (list) list.innerHTML = fallback;
   }
 }
 
