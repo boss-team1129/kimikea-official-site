@@ -770,6 +770,32 @@ p {
   margin-top: -8px;
 }
 
+.choice-points {
+  display: grid;
+  gap: 7px;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  color: rgba(255,255,255,.78);
+  font-size: 13px;
+}
+
+.choice-points li {
+  position: relative;
+  padding-left: 14px;
+}
+
+.choice-points li::before {
+  content: "";
+  position: absolute;
+  left: 0;
+  top: .72em;
+  width: 5px;
+  height: 5px;
+  border-radius: 50%;
+  background: var(--gold-soft);
+}
+
 .stats-grid {
   display: grid;
   grid-template-columns: repeat(2, minmax(0, 1fr));
