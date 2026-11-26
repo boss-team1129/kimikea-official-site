@@ -1625,6 +1625,31 @@ a:focus-visible,button:focus-visible,summary:focus-visible{outline:3px solid #8a
 }
 @media (prefers-color-scheme:dark){.site-header a:focus-visible,.site-header button:focus-visible{outline-color:#f1d99a}}
 
+/* Style gallery */
+.style-gallery{background:#fffaf1}
+.style-gallery .section-kicker{color:#8a6a1f}
+.style-gallery__grid{--style-gallery-gap:10px;display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:var(--style-gallery-gap);margin:28px auto 0;padding:0;list-style:none}
+.style-gallery__grid>li{min-width:0}
+.style-gallery__grid>li:nth-child(3){grid-column:1/-1;justify-self:center;width:calc((100% - var(--style-gallery-gap)) / 2)}
+.style-gallery__item{margin:0;overflow:hidden;border:1px solid var(--line);border-radius:var(--radius);background:var(--paper);box-shadow:0 12px 34px rgba(44,32,19,.08)}
+.style-gallery__item img{width:100%;height:auto;aspect-ratio:940/1672;object-fit:contain;background:#f4eee4}
+.style-gallery__item figcaption{padding:10px 8px 12px;border-top:1px solid var(--line);color:var(--ink);font-family:var(--font-serif);font-size:14px;line-height:1.5;text-align:center;overflow-wrap:anywhere}
+.style-gallery__note{margin:14px auto 0;color:var(--muted);font-size:13px;line-height:1.6;text-align:center}
+.style-gallery__action{display:flex;justify-content:center;margin-top:22px}
+.style-gallery__button{min-height:52px;padding:12px 22px;line-height:1.4;text-align:center}
+@media (min-width:760px){
+.style-gallery__grid{--style-gallery-gap:22px;grid-template-columns:repeat(3,minmax(0,1fr))}
+.style-gallery__grid>li:nth-child(3){grid-column:auto;justify-self:stretch;width:auto}
+.style-gallery__item figcaption{padding:14px 12px 16px;font-size:16px}
+.style-gallery__note{font-size:14px}
+}
+@media (prefers-color-scheme:dark){
+.style-gallery{background:#1a1612}
+.style-gallery .section-kicker{color:var(--gold-soft)}
+.style-gallery__item img{background:#2a241d}
+.style-gallery a:focus-visible{outline-color:#f1d99a}
+}
+
 @media (prefers-reduced-motion: reduce) {
   *,
   *::before,
