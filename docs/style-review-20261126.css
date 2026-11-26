@@ -1584,7 +1584,7 @@ a:focus-visible,button:focus-visible,summary:focus-visible{outline:3px solid #8a
 .hk-body{padding:26px 22px 30px}
 .hk-body p{color:var(--muted);font-size:16px}
 .hk-body .section-kicker{margin-bottom:12px}
-.hk-body h2{font-size:clamp(1.75rem,4.2vw,2.625rem);line-height:1.35}
+#hk-title{font-size:clamp(1.75rem,4.2vw,2.625rem);line-height:1.35}
 .hk-body .ext-note{margin-top:12px}
 .association-card{display:grid;gap:26px;padding:26px 20px;border:1px solid rgba(185,154,82,.4);border-radius:var(--radius);background:var(--paper);box-shadow:var(--shadow)}
 .association-logo{position:relative;justify-self:center;width:min(100%,360px);margin:0;aspect-ratio:1/1;overflow:hidden;border:1px solid var(--line);border-radius:var(--radius);background:#fff}
